@@ -6,11 +6,13 @@ Getting data out from Articulate Storyline into Google Spreadsheet
 	.zip is the published file that you can save onto your server for testing
 	.gs.txt is the code you should be copying/pasting to your Google spreadsheet (Tools > Script editor...)
 
-Technical implementation discussion: 
+Created by: James Handyside and Karman Chan
+Voice over by: Karena Metford
 
+Technical implementation discussion: 
 https://community.articulate.com/discussions/articulate-storyline/exporting-variables-into-a-google-spreadsheet
 
-This micro learning concept is taken from various research done by others: 3M's 7-minute exercise, RallyTeam, MentorCloud, 15five, NovoEd, Headspace, IHI's Improvement App
+This micro learning concept took shape because of various research/projects done by others: 3M's 7-minute exercise, RallyTeam, MentorCloud, 15five, NovoEd, Headspace, IHI's Improvement App
 
 Michael Allen’s Successive Approximation Model (SAM)
 
