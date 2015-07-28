@@ -1,0 +1,96 @@
+//
+//  1. Enter sheet name where data is to be written below
+        var SHEET_NAME = "DATA";
+//  2. Change property in openById(...) to your google spreadsheet id. See its URL code after /d/ before /edit
+//  3. Run > setup
+//
+//  4. Publish > Deploy as web app 
+//    - enter Project Version name and click 'Save New Version' 
+//    - Execute the app as: Me
+//    - Who has access to the app: Anyone, even anonymous 
+//
+//  5. Copy the 'Current web app URL' and post this in your form/script action 
+//
+//  6. Insert column names on your destination sheet matching the parameter names of the data you are passing in (exactly matching case)
+ 
+var SCRIPT_PROP = PropertiesService.getScriptProperties(); // new property service
+ 
+// If you don't want to expose either GET or POST methods you can comment out the appropriate function
+function doGet(e){
+  // shortly after my original solution Google announced the LockService[1]
+  // this prevents concurrent access overwritting data
+  // [1] http://googleappsdeveloper.blogspot.co.uk/2011/10/concurrency-and-google-apps-script.html
+  // we want a public lock, one that locks for all invocations
+  var lock = LockService.getPublicLock();
+  lock.waitLock(30000);  // wait 30 seconds before conceding defeat.
+   
+  try {
+    // next set where we write the data - you could write to multiple/alternate destinations
+    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("1S4fkTPtHclWX_rKB40J_YlvIcOrCdMjoo_May3Tzm_w"));
+    var sheet = doc.getSheetByName(SHEET_NAME);
+     
+    var total1 = sheet.getRange(2, 3).getValue()[0]; // get value third column
+    var total2 = sheet.getRange(2, 4).getValue()[0]; // get value fourth column
+    
+    // return json success results
+    return ContentService
+    .createTextOutput(JSON.stringify({"result":"success","total1":total1}))
+          .setMimeType(ContentService.MimeType.JSON);
+  } catch(e){
+    // if error return this
+    return ContentService
+          .createTextOutput(JSON.stringify({"result":"error", "error": e}))
+          .setMimeType(ContentService.MimeType.JSON);
+  } finally { //release lock
+    lock.releaseLock();
+  }
+}
+
+function doPost(e){
+  // shortly after my original solution Google announced the LockService[1]
+  // this prevents concurrent access overwritting data
+  // [1] http://googleappsdeveloper.blogspot.co.uk/2011/10/concurrency-and-google-apps-script.html
+  // we want a public lock, one that locks for all invocations
+  var lock = LockService.getPublicLock();
+  lock.waitLock(30000);  // wait 30 seconds before conceding defeat.
+   
+  try {
+    // next set where we write the data - you could write to multiple/alternate destinations
+    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("1S4fkTPtHclWX_rKB40J_YlvIcOrCdMjoo_May3Tzm_w"));
+    var sheet = doc.getSheetByName(SHEET_NAME);
+     
+    // we'll assume header is in row 1 but you can override with header_row in GET/POST data
+    var headers = sheet.getRange(1, 1, 1, 2).getValues()[0];
+    var nextRow = sheet.getLastRow()+1; // get next row
+    var row = []; 
+    // loop through the header columns
+   for (var i = 0; i < headers.length; i++) {
+      if (headers[i] == "Timestamp"){ // special case if you include a 'Timestamp' column
+        row.push(new Date());
+      } else { // else use header name to get data
+        row.push(e.parameter[headers[i]]);
+      }
+    }
+
+    // more efficient to set values as [][] array than individually
+    sheet.getRange(nextRow, 1, 1, 2).setValues([row]);
+    // return json success results
+    return ContentService
+          .createTextOutput(JSON.stringify({"result":"success", "row": nextRow}))
+          .setMimeType(ContentService.MimeType.JSON);
+  } catch(e){
+    // if error return this
+    return ContentService
+          .createTextOutput(JSON.stringify({"result":"error", "error": e}))
+          .setMimeType(ContentService.MimeType.JSON);
+  } finally { //release lock
+    lock.releaseLock();
+  }
+}
+ 
+
+function setup() {
+    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    SCRIPT_PROP.setProperty("1S4fkTPtHclWX_rKB40J_YlvIcOrCdMjoo_May3Tzm_w", doc.getId());
+}
+
