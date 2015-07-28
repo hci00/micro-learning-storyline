@@ -12,7 +12,7 @@ Voice over by: Karena Metford
 Technical implementation discussion: 
 https://community.articulate.com/discussions/articulate-storyline/exporting-variables-into-a-google-spreadsheet
 
-This micro learning concept took shape because of various research/projects done by others: 3M's 7-minute exercise, RallyTeam, MentorCloud, 15five, NovoEd, Headspace, IHI's Improvement App
+This micro learning concept is drawn from various research/projects/design done by others: 3M's 7-minute exercise, RallyTeam, MentorCloud, 15five, NovoEd, Headspace, IHI's Improvement App
 
 Michael Allen’s Successive Approximation Model (SAM)
 
@@ -24,7 +24,7 @@ Jane Hart's Modern Workplace Learning
 	-consider the enhanced opportunities technology provides to enable and support learning and performance new ways
 	-recognize the importance of supporting personal learning experiences in the workplace
 
-Concepts to be explored:
+Concepts investigated during brainstorming and design stage:
 Workplace Learning,
 Action Mapping for Designing Instruction,
 Flipping the Classroom,
